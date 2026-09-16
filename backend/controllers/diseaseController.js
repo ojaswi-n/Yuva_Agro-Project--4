@@ -33,7 +33,7 @@ Respond STRICTLY in JSON conforming to:
     const ai = new GoogleGenAI({ apiKey });
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.6-flash',
       contents: [
         {
           inlineData: {
@@ -62,7 +62,7 @@ Respond STRICTLY in JSON conforming to:
     return parseGeminiResponse(rawText);
   } catch (sdkError) {
     // If SDK encounters an error or fallback is needed, call REST endpoint
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
     const restPayload = {
       contents: [
         {
