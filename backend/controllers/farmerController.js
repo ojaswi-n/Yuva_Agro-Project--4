@@ -59,16 +59,32 @@ function registerFarmer(req, res) {
         });
     }
 
-    const farmer = new Farmer({
-        name,
-        village,
-        crop,
-        phone
-    });
+    Farmer.findOne({ phone })
+        .then(existingFarmer => {
 
-    farmer.save()
+            if (existingFarmer) {
+                return res.status(409).json({
+                    message: "Phone number already registered"
+                });
+            }
+
+            const farmer = new Farmer({
+                name,
+                village,
+                crop,
+                phone
+            });
+
+            return farmer.save();
+        })
         .then(newFarmer => {
-            res.status(201).json(newFarmer);
+
+            if (newFarmer) {
+                res.status(201).json({
+                    message: "Farmer registered successfully"
+                });
+            }
+
         })
         .catch(error => {
             res.status(500).json({
