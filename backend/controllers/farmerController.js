@@ -1,8 +1,6 @@
 const Farmer = require('../models/Farmer');
 const connectDB = require('../config/db');
 
-// Guard: without this, Mongoose silently buffers queries for 10s and the page
-// just hangs. This returns an honest error straight away instead.
 function requireDB(res) {
     if (!connectDB.isConnected()) {
         res.status(503).json({
@@ -10,61 +8,43 @@ function requireDB(res) {
         });
         return false;
     }
+
     return true;
 }
 
-// GET /api/farmers
+
 function getFarmers(req, res) {
-    if (!requireDB(res)) return;
-
-    Farmer.find()
-        .then(farmers => {
-            res.json(farmers);
-        })
-        .catch(error => {
-            res.status(500).json({ message: error.message });
-        });
+    return res.status(403).json({
+        message: 'Access denied. Farmer details are private.'
+    });
 }
 
-// GET /api/farmers/:id
+
 function getFarmer(req, res) {
-    if (!requireDB(res)) return;
-
-    Farmer.findById(req.params.id)
-        .then(farmer => {
-            if (!farmer) {
-                return res.status(404).json({
-                    message: "Farmer not found"
-                });
-            }
-
-            res.json(farmer);
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
-        });
+    return res.status(403).json({
+        message: 'Access denied. Farmer details are private.'
+    });
 }
 
-// POST /api/farmers
 function registerFarmer(req, res) {
     if (!requireDB(res)) return;
 
-    const { name, village, crop, phone } = req.body;
+    let { name, village, crop, phone } = req.body;
 
     if (!name || !phone) {
         return res.status(400).json({
-            message: "Name and phone are required"
+            message: 'Name and phone are required'
         });
     }
+
+    phone = phone.trim();
 
     Farmer.findOne({ phone })
         .then(existingFarmer => {
 
             if (existingFarmer) {
                 return res.status(409).json({
-                    message: "Phone number already registered"
+                    message: 'Phone number already registered'
                 });
             }
 
@@ -79,16 +59,33 @@ function registerFarmer(req, res) {
         })
         .then(newFarmer => {
 
-            if (newFarmer) {
-                res.status(201).json({
-                    message: "Farmer registered successfully"
+            
+            if (!newFarmer) return;
+
+            return res.status(201).json({
+                message: 'Farmer registered successfully'
+            });
+        })
+        .catch(error => {
+
+            
+            if (error.code === 11000) {
+                return res.status(409).json({
+                    message: 'Phone number already registered'
                 });
             }
 
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
+            // Mongoose validation error
+            if (error.name === 'ValidationError') {
+                return res.status(400).json({
+                    message: error.message
+                });
+            }
+
+            console.error('Farmer registration error:', error);
+
+            return res.status(500).json({
+                message: 'Server error while registering farmer'
             });
         });
 }
