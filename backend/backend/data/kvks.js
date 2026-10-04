@@ -4,6 +4,7 @@ const kvks = [
     // =========================
 
     {
+        code: "UP-AURAIYA",
         name: "Krishi Vigyan Kendra, Auraiya",
         state: "Uttar Pradesh",
         district: "Auraiya",
@@ -14,6 +15,7 @@ const kvks = [
     },
 
     {
+        code: "UP-HAMIRPUR",
         name: "Krishi Vigyan Kendra, Hamirpur",
         state: "Uttar Pradesh",
         district: "Hamirpur",
@@ -28,6 +30,7 @@ const kvks = [
     // =========================
 
     {
+        code: "PB-JALANDHAR",
         name: "Krishi Vigyan Kendra, Jalandhar",
         state: "Punjab",
         district: "Jalandhar",
@@ -38,6 +41,7 @@ const kvks = [
     },
 
     {
+        code: "PB-MANSA",
         name: "Krishi Vigyan Kendra, Mansa",
         state: "Punjab",
         district: "Mansa",
@@ -52,6 +56,7 @@ const kvks = [
     // =========================
 
     {
+        code: "HR-FATEHABAD",
         name: "Krishi Vigyan Kendra, Fatehabad",
         state: "Haryana",
         district: "Fatehabad",
@@ -62,6 +67,7 @@ const kvks = [
     },
 
     {
+        code: "HR-JHAJJAR",
         name: "Krishi Vigyan Kendra, Jhajjar",
         state: "Haryana",
         district: "Jhajjar",
@@ -76,6 +82,7 @@ const kvks = [
     // =========================
 
     {
+        code: "MP-DATIA",
         name: "Krishi Vigyan Kendra, Datia",
         state: "Madhya Pradesh",
         district: "Datia",
@@ -86,6 +93,7 @@ const kvks = [
     },
 
     {
+        code: "MP-ASHOKNAGAR",
         name: "Krishi Vigyan Kendra, Ashoknagar",
         state: "Madhya Pradesh",
         district: "Ashoknagar",
@@ -100,6 +108,7 @@ const kvks = [
     // =========================
 
     {
+        code: "RJ-SRIGANGANAGAR",
         name: "Krishi Vigyan Kendra, Sri Ganganagar",
         state: "Rajasthan",
         district: "Sri Ganganagar",
@@ -110,6 +119,7 @@ const kvks = [
     },
 
     {
+        code: "RJ-KARAULI",
         name: "Krishi Vigyan Kendra, Karauli",
         state: "Rajasthan",
         district: "Karauli",
