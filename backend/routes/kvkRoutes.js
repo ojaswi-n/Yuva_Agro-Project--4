@@ -1,23 +1,24 @@
 const express = require('express');
 
 const {
-    getAllKVKs,
+    getKVKs,
     getKVKsByState,
-    getKVKById
+    getKVKsByDistrict,
+    getKVK
 } = require('../controllers/kvkController');
 
 const router = express.Router();
 
+// Get all KVKs
+router.get('/', getKVKs);
 
-router.get('/', (req, res) => {
+// Get KVKs by state
+router.get('/state/:state', getKVKsByState);
 
-    if (req.query.state) {
-        return getKVKsByState(req, res);
-    }
+// Get KVKs by district
+router.get('/district/:district', getKVKsByDistrict);
 
-    return getAllKVKs(req, res);
-});
-
-router.get('/:id', getKVKById);
+// Get one KVK by unique code
+router.get('/:code', getKVK);
 
 module.exports = router;
