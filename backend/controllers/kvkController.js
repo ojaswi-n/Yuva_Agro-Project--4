@@ -1,21 +1,21 @@
 const KVK = require('../models/KVK');
 const connectDB = require('../config/db');
 
+// Check whether MongoDB is connected
 function requireDB(res) {
     if (!connectDB.isConnected()) {
         res.status(503).json({
-            message: 'Database is not connected.'
+            message: 'Database is not connected. Start MongoDB and restart the server.'
         });
-
         return false;
     }
 
     return true;
 }
 
-
 // GET /api/kvks
-function getAllKVKs(req, res) {
+// Get all KVKs
+function getKVKs(req, res) {
     if (!requireDB(res)) return;
 
     KVK.find()
@@ -24,30 +24,21 @@ function getAllKVKs(req, res) {
             res.json(kvks);
         })
         .catch(error => {
-            console.error('KVK fetch error:', error);
-
             res.status(500).json({
-                message: 'Unable to fetch agricultural experts'
+                message: error.message
             });
         });
 }
 
 
-// GET /api/kvks?state=Uttar Pradesh
+// GET /api/kvks/state/:state
+// Get KVKs belonging to a particular state
 function getKVKsByState(req, res) {
     if (!requireDB(res)) return;
 
-    const { state } = req.query;
-
-    if (!state) {
-        return res.status(400).json({
-            message: 'State is required'
-        });
-    }
-
     KVK.find({
         state: {
-            $regex: `^${state}$`,
+            $regex: `^${req.params.state}$`,
             $options: 'i'
         }
     })
@@ -56,25 +47,47 @@ function getKVKsByState(req, res) {
             res.json(kvks);
         })
         .catch(error => {
-            console.error('KVK state search error:', error);
-
             res.status(500).json({
-                message: 'Unable to fetch agricultural experts'
+                message: error.message
             });
         });
 }
 
 
-// GET /api/kvks/:id
-function getKVKById(req, res) {
+// GET /api/kvks/district/:district
+// Get KVKs belonging to a particular district
+function getKVKsByDistrict(req, res) {
     if (!requireDB(res)) return;
 
-    KVK.findById(req.params.id)
-        .then(kvk => {
+    KVK.find({
+        district: {
+            $regex: `^${req.params.district}$`,
+            $options: 'i'
+        }
+    })
+        .then(kvks => {
+            res.json(kvks);
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: error.message
+            });
+        });
+}
 
+
+// GET /api/kvks/:code
+// Get one specific KVK using its unique code
+function getKVK(req, res) {
+    if (!requireDB(res)) return;
+
+    KVK.findOne({
+        code: req.params.code
+    })
+        .then(kvk => {
             if (!kvk) {
                 return res.status(404).json({
-                    message: 'Agricultural expert center not found'
+                    message: 'KVK not found'
                 });
             }
 
@@ -89,7 +102,8 @@ function getKVKById(req, res) {
 
 
 module.exports = {
-    getAllKVKs,
+    getKVKs,
     getKVKsByState,
-    getKVKById
+    getKVKsByDistrict,
+    getKVK
 };
