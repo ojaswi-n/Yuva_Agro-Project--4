@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const farmerRoutes = require('./routes/farmerRoutes');
 const diseaseRoutes = require('./routes/diseaseRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const kvkRoutes = require('./routes/kvkRoutes');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/farmers', farmerRoutes);
 app.use('/api/disease', diseaseRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/kvks', kvkRoutes);
 
 // Health check — handy for showing the faculty that the server is alive
 app.get('/api/health', (req, res) => {
